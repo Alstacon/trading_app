@@ -3,27 +3,30 @@ from typing import AsyncGenerator
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
-from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, ForeignKey
+from sqlalchemy import String, Boolean, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
+from sqlalchemy.orm import Mapped, mapped_column
 
 from config import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
-from models.models import role
+from models.models import Role
 
-DATABASE_URL = f'''postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'''
+DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 Base: DeclarativeMeta = declarative_base()
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    id: int = Column(Integer, primary_key=True)
-    email: str = Column(String, nullable=False)
-    username: str = Column(String, nullable=False)
-    registered_at: datetime = Column(TIMESTAMP, default=datetime.utcnow)
-    role_id: int = Column(Integer, ForeignKey(role.c.id))
-    hashed_password: str = Column(String(length=1024), nullable=False)
-    is_active: bool = Column(Boolean, default=True, nullable=False)
-    is_superuser: bool = Column(Boolean, default=False, nullable=False)
-    is_verified: bool = Column(Boolean, default=False, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(
+        String(length=320), nullable=False
+    )
+    registered_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    role_id: Mapped[int] = mapped_column(ForeignKey(Role.id))
+    email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
 engine = create_async_engine(DATABASE_URL)

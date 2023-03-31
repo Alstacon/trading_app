@@ -10,5 +10,5 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_PORT = os.environ.get('DB_PORT')
 
 
-SECRET_KEY_COOKIE = os.environ.get('SECRET_KEY')
-SECRET_KEY_MANAGER = os.environ.get('SECRET_KEY')
+SECRET_KEY_COOKIE = os.environ.get('SECRET_KEY_COOKIE')
+SECRET_KEY_MANAGER = os.environ.get('SECRET_KEY_MANAGER')
