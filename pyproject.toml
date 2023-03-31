@@ -13,6 +13,8 @@ psycopg2-binary = "^2.9.5"
 sqlalchemy = "^2.0.7"
 alembic = "^1.10.2"
 python-dotenv = "^1.0.0"
+fastapi-users = {extras = ["sqlalchemy"], version = "^10.4.1"}
+asyncpg = "^0.27.0"
 
 
 [tool.poetry.group.dev.dependencies]
