@@ -1,16 +1,12 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, String, TIMESTAMP, ForeignKey, JSON, Boolean
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
+from sqlalchemy import MetaData, String, ForeignKey, JSON, Boolean
+from sqlalchemy.orm import Mapped, mapped_column
+
+from database import Base
 
 metadata = MetaData()
-
-
-class Base(DeclarativeBase):
-    type_annotation_map = {
-        JSON: JSON,
-        datetime: TIMESTAMP(timezone=True),
-    }
 
 
 class Role(Base):
@@ -21,8 +17,9 @@ class Role(Base):
     permissions: Mapped[JSON] = mapped_column(nullable=True)
 
 
-class User(Base):
+class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = 'user'
+    metadata = metadata
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
