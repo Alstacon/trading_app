@@ -13,8 +13,8 @@ class Operation(Base):
     metadata = metadata
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    quantity: Mapped[str] = mapped_column()
-    figi: Mapped[str] = mapped_column()
-    instrument_type: Mapped[str] = mapped_column()
-    date: Mapped[datetime] = mapped_column()
-    type: Mapped[str] = mapped_column()
+    quantity: Mapped[str]
+    figi: Mapped[str]
+    instrument_type: Mapped[str]
+    date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    type: Mapped[str]

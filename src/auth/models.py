@@ -11,7 +11,7 @@ metadata = MetaData()
 
 class Role(Base):
     __tablename__ = 'role'
-
+    metadata = metadata
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     permissions: Mapped[JSON] = mapped_column(nullable=True)

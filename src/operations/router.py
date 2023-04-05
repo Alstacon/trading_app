@@ -17,13 +17,8 @@ async def get_specific_operations(operation_type: str, session: AsyncSession = D
     try:
         query = select(Operation).where(Operation.type == operation_type)
         result = await session.execute(query)
-        return {
-            'status': 'success',
-            'data': result.all(),
-            'details': None
-        }
+        return result.scalars().all()
     except Exception:
-
         raise HTTPException(status_code=500, detail={
             'status': 'error',
             'data': None,
