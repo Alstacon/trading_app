@@ -12,3 +12,6 @@ DB_PORT = os.environ.get('DB_PORT')
 
 SECRET_KEY_COOKIE = os.environ.get('SECRET_KEY_COOKIE')
 SECRET_KEY_MANAGER = os.environ.get('SECRET_KEY_MANAGER')
+
+SMTP_USER = os.environ.get('SMTP_USER')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
