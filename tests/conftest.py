@@ -5,8 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy import insert, select
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.pool import NullPool
 
 from auth.models import Role
@@ -17,12 +16,11 @@ from src.config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASSWORD_TEST, DB_PORT_TE
 from src.main import app
 
 # DATABASE
-DATABASE_URL_TEST = f'''
-postgresql+asyncpg://{DB_USER_TEST}:{DB_PASSWORD_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}
-'''
+DATABASE_URL_TEST = f'postgresql+asyncpg:' \
+                    f'//{DB_USER_TEST}:{DB_PASSWORD_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}'
 
 engine_test = create_async_engine(DATABASE_URL_TEST, poolclass=NullPool)
-async_session_maker = sessionmaker(engine_test, class_=AsyncSession, expire_on_commit=False)
+async_session_maker = async_sessionmaker(engine_test, expire_on_commit=False)
 metadata.bind = engine_test
 
 
@@ -44,8 +42,9 @@ async def prepare_database():
 
 
 @pytest.fixture(scope='session')
-def event_loop(request):
-    loop = asyncio.get_event_loop_policy().new_event_loop()
+def event_loop():
+    policy = asyncio.get_event_loop_policy()
+    loop = policy.new_event_loop()
     yield loop
     loop.close()
 
