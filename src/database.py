@@ -1,13 +1,15 @@
 import datetime
 from typing import AsyncGenerator
 
-from sqlalchemy import JSON, TIMESTAMP
+from sqlalchemy import JSON, TIMESTAMP, MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
 from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+metadata = MetaData()
 
 
 class Base(DeclarativeBase):

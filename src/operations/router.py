@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('/')
+@router.get('')
 async def get_specific_operations(operation_type: str, session: AsyncSession = Depends(get_async_session)):
     try:
         query = select(Operation).where(Operation.type == operation_type)
@@ -29,7 +29,7 @@ async def get_specific_operations(operation_type: str, session: AsyncSession = D
         })
 
 
-@router.post('/')
+@router.post('')
 async def add_specific_operations(new_operation: OperationCreate, session: AsyncSession = Depends(get_async_session)):
     stmt = insert(Operation).values(**new_operation.dict())
     await session.execute(stmt)
