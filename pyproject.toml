@@ -17,6 +17,8 @@ asyncpg = "^0.27.0"
 fastapi-cache2 = {extras = ["redis"], version = "^0.2.1"}
 redis = "^4.5.4"
 asyncio = "^3.4.3"
+celery = "^5.2.7"
+flower = "^1.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
