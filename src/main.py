@@ -2,6 +2,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi import FastAPI
 from redis import asyncio as aioredis
+from starlette.middleware.cors import CORSMiddleware
 
 from auth.auth_config import auth_backend, fastapi_users
 from auth.schemas import UserRead, UserCreate
@@ -27,6 +28,18 @@ app.include_router(
 
 app.include_router(router_operation)
 app.include_router(router_tasks)
+
+origins = [
+    'http://localhost:3000',
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allow_headers=['Content-Type', 'Set-Cookie', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Origin',
+                   'Authorization'], )
 
 
 @app.on_event('startup')
