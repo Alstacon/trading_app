@@ -11,6 +11,7 @@ from sqlalchemy.pool import NullPool
 from auth.models import Role
 from database import get_async_session
 from database import metadata
+from operations.models import Operation
 from src.config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASSWORD_TEST, DB_PORT_TEST,
                         DB_USER_TEST)
 from src.main import app
@@ -66,5 +67,20 @@ async def add_role():
         await session.commit()
 
         query = select(Role)
+        result = await session.execute(query)
+    return result.scalar()
+
+
+@pytest.fixture(scope='session')
+async def add_operation():
+    async with async_session_maker() as session:
+        stmt = insert(Operation).values(id=34, quantity='test',
+                                        figi='test',
+                                        instrument_type='test',
+                                        type='test')
+        await session.execute(stmt)
+        await session.commit()
+
+        query = select(Operation)
         result = await session.execute(query)
     return result.scalar()
