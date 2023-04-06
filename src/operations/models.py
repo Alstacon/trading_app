@@ -1,11 +1,8 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData
 from sqlalchemy.orm import Mapped, mapped_column
 
-from database import Base
-
-metadata = MetaData()
+from database import Base, metadata
 
 
 class Operation(Base):

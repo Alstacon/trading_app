@@ -7,7 +7,9 @@ from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+from src.database import metadata
 from src.config import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
+
 # from models.models import metadata
 
 config = context.config
@@ -27,7 +29,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 from src.auth.models import metadata as metadata_auth
 from src.operations.models import metadata as metadata_operations
-target_metadata = [metadata_auth, metadata_operations]
+
+target_metadata = metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
