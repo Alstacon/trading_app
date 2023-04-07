@@ -3,16 +3,19 @@ from fastapi_cache.backends.redis import RedisBackend
 from fastapi import FastAPI
 from redis import asyncio as aioredis
 from starlette.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 
 from auth.auth_config import auth_backend, fastapi_users
 from auth.schemas import UserRead, UserCreate
 
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
+from pages.router import router as router_pages
 
 app = FastAPI(
     title='Trading App'
 )
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -28,9 +31,10 @@ app.include_router(
 
 app.include_router(router_operation)
 app.include_router(router_tasks)
+app.include_router(router_pages)
 
 origins = [
-    'http://localhost:3000',
+    'http://localhost:8000',
 ]
 
 app.add_middleware(
