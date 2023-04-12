@@ -7,6 +7,7 @@ from redis import asyncio as aioredis
 
 from auth.auth_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
+from config import REDIS_HOST, REDIS_PORT
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 from pages.router import router as router_pages
@@ -55,5 +56,5 @@ app.add_middleware(
 
 @app.on_event('startup')
 async def startup():
-    redis = aioredis.from_url('redis://localhost', encoding='utf8', decode_responses=True)
+    redis = aioredis.from_url(f'redis://{REDIS_HOST}:{REDIS_PORT}', encoding='utf8', decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix='fastapi-cache')
