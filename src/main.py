@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from starlette.responses import RedirectResponse
 
 from auth.auth_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
@@ -19,6 +20,12 @@ app = FastAPI(
 
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
+
+@app.get('/')
+def old():
+    return RedirectResponse('/pages/home')
+
+
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix='/auth',
@@ -33,7 +40,10 @@ app.include_router(
 
 app.include_router(router_operation)
 app.include_router(router_tasks)
-app.include_router(router_pages)
+app.include_router(
+    router_pages,
+    # dependencies=[Depends(current_user)]
+)
 app.include_router(router_chat)
 
 origins = [
